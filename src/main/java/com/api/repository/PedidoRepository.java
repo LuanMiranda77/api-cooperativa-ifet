@@ -11,17 +11,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.domain.Pedido;
-import com.api.domain.enuns.EstatusPedido;
+import com.api.domain.OrderSale;
+import com.api.domain.enuns.OrderStatus;
 
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Long>{
+public interface PedidoRepository extends JpaRepository<OrderSale, Long>{
 	
-	public List<Pedido> findByDataDeCriacaoBetween(Date dtIni, Date dtFin );
+	public List<OrderSale> findByDateCreateBetween(Date dtIni, Date dtFin );
 	
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	@Query("Update Pedido pedido SET pedido.estatus =:estatus, pedido.codigoRastreio =:code  where pedido.id =:id")
-	public void updateStatus(@Param("id") Long id, @Param("estatus") EstatusPedido estatus, @Param("code")String code );
+	@Query("Update OrderSale orderSale SET orderSale.status =:newStatus where orderSale.id =:id")
+	public void updateStatus(@Param("id") Long id, @Param("newStatus") OrderStatus newStatus);
 
 }

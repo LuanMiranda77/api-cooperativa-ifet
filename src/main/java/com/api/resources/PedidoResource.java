@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.domain.Pedido;
+import com.api.domain.OrderSale;
 import com.api.domain.TO.DashboardTO;
-import com.api.domain.enuns.EstatusPedido;
+import com.api.domain.enuns.OrderStatus;
 import com.api.repository.PedidoRepository;
 import com.api.services.DashboardService;
 import com.api.services.PedidoService;
@@ -32,7 +32,7 @@ import com.api.services.filter.Dashboard;
 
 @RestController
 @RequestMapping("/api/pedido")
-public class PedidoResource implements ResourceBase<Pedido, Long>{
+public class PedidoResource implements ResourceBase<OrderSale, Long>{
 
 	@Autowired
 	private PedidoService pedidoService;
@@ -47,22 +47,22 @@ public class PedidoResource implements ResourceBase<Pedido, Long>{
 //	Salvar Pedido
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Pedido> save(@Valid Pedido pEntity, HttpServletResponse response) {
-		Pedido pedidoSalvo = pedidoService.save(pEntity);
+	public ResponseEntity<OrderSale> save(@Valid OrderSale pEntity, HttpServletResponse response) {
+		OrderSale pedidoSalvo = pedidoService.save(pEntity);
 		return ResponseEntity.ok(pedidoSalvo);
 	}
 
 //	Atualizar pedido
 	@PutMapping
-	public ResponseEntity<Pedido> update(@Valid Long pID, @Valid Pedido pEntity) {
-		Pedido pedidoSalvo = pedidoService.update(pEntity);
+	public ResponseEntity<OrderSale> update(@Valid Long pID, @Valid OrderSale pEntity) {
+		OrderSale pedidoSalvo = pedidoService.update(pEntity);
 		return ResponseEntity.ok(pedidoSalvo);
 	}
 	
 //	Atualizar pedido
-	@PutMapping("/status/{id}/{code}/{status}")
-	public ResponseEntity<Pedido> updateStatus(@PathVariable Long id, @PathVariable String code, @PathVariable EstatusPedido status) {
-		pedidoRepository.updateStatus(id,status, code);
+	@PutMapping("/status/{id}/{status}")
+	public ResponseEntity<OrderSale> updateStatus(@PathVariable Long id, @PathVariable OrderStatus status) {
+		pedidoRepository.updateStatus(id,status);
 		return ResponseEntity.ok(null);
 	}
 
@@ -75,45 +75,45 @@ public class PedidoResource implements ResourceBase<Pedido, Long>{
 
 //	Filtro por ID
 	@GetMapping("/{pID}")
-	public ResponseEntity<Pedido> findById(@PathVariable Long pID) {
+	public ResponseEntity<OrderSale> findById(@PathVariable Long pID) {
 		return  ResponseEntity.ok(pedidoRepository.findById(pID).get());
 	}
 
 
 //	Listar Pedido
 	@GetMapping
-	public List<Pedido> findAllList() {
+	public List<OrderSale> findAllList() {
 		return pedidoRepository.findAll();
 	}
 	
 
 //	Listar Pedido
 	@PostMapping("/find-data")
-	public List<Pedido> findByPedidoEstatus(@RequestBody  Pedido pedido ) {
-		return pedidoService.findPedidosByEstatus(pedido.getDataDeCriacao(), pedido.getDataFechamento(), pedido.getEstatus());
+	public List<OrderSale> findByPedidoEstatus(@RequestBody  OrderSale pedido ) {
+		return pedidoService.findPedidosByEstatus(pedido.getDateCreate(), pedido.getDateClose(), pedido.getStatus());
 	}
 	
 	//	Listar Pedido
 	@PostMapping("/find-data-all")
-	public List<Pedido> findByPedidoData(@RequestBody  Pedido pedido ) {
-		return pedidoRepository.findByDataDeCriacaoBetween(pedido.getDataDeCriacao(), pedido.getDataFechamento());
+	public List<OrderSale> findByPedidoData(@RequestBody  OrderSale pedido ) {
+		return pedidoRepository.findByDateCreateBetween(pedido.getDateCreate(), pedido.getDateClose());
 	}
 	
 //	Listar Pedido
-	@PostMapping("/find-pedidos-by-cliente")
-	public List<Pedido> findPedidoByCliente(@RequestBody Pedido pedido ) {
-		return pedidoService.findPedidosByCliente(pedido.getDataDeCriacao(), pedido.getDataFechamento(), pedido.getCliente());
-	}
+//	@PostMapping("/find-pedidos-by-cliente")
+//	public List<Order> findPedidoByCliente(@RequestBody Order pedido ) {
+//		return pedidoService.findPedidosByCliente(pedido.getDateCreate(), pedido.getDateClose(), pedido.getCliente());
+//	}
 	
 //	Listar Pedido
 	@PostMapping("/find-pedidos-by-cliente-status")
-	public List<Pedido> findPedidoByClienteStatus(@RequestBody Pedido pedido ) {
-		return pedidoService.findPedidosByClienteStatus(pedido.getDataDeCriacao(), pedido.getDataFechamento(), pedido.getCliente(), pedido.getEstatus());
-	}
+//	public List<Order> findPedidoByClienteStatus(@RequestBody Order pedido ) {
+//		return pedidoService.findPedidosByClienteStatus(pedido.getDateCreate(), pedido.getDateClose(), pedido.getCliente(), pedido.getEstatus());
+//	}
 
 
 
-	public Page<Pedido> findAllPage(Pedido pFilter, Pageable pPage) {
+	public Page<OrderSale> findAllPage(OrderSale pFilter, Pageable pPage) {
 		return null;
 	}
 	

@@ -3,6 +3,7 @@ package com.api.domain;
 
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ import lombok.Data;
 @Entity
 @Data
 
-public class ItemPedido implements Serializable {
+public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -35,22 +36,26 @@ public class ItemPedido implements Serializable {
 	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="pedido_id")
-	private Pedido pedido;
+	@JoinColumn(name="order_id")
+	private OrderSale order;
 	
 	@ManyToOne
-	@JoinColumn(name="produto_id")
-	private Produto produto;
+	@JoinColumn(name="product_id")
+	private Product product;
+	
+	private String name_product;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataVenda;
+	private Date dateSale;
 
-	private int quantidadeVendida;
+	private int quantitySale;
+	
+	private BigDecimal priceSale;
 	
 	@PrePersist
-	private void setDataVenda() {
-		this.dataVenda = UtilsHorasData.subtrair(new Date(), 3);
+	private void setDateSale() {
+		this.dateSale = UtilsHorasData.subtrair(new Date(), 3);
 	}
 	
 

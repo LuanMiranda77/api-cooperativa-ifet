@@ -32,27 +32,15 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Cliente {
+public class Client {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
-	
 	@NotBlank
 	@Size(min=11)
 	private String cpfCnpj;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private TipoCliente tipo;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "cliente_id")
-	private List<Endereco> enderecos = new ArrayList<>();
 	
 	private String telefone;
 	

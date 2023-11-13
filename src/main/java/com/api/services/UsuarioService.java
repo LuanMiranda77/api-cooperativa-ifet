@@ -8,8 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.domain.Usuario;
-import com.api.domain.TO.UsuarioTO;
+import com.api.domain.UserAplication;
 import com.api.repository.UsuarioRepository;
 import com.api.services.exceptions.EmailNotExistException;
 import com.api.services.exceptions.UsuarioExistException;
@@ -25,15 +24,15 @@ public class UsuarioService {
 	@Autowired
 	private EmailService emailService;
 	
-	public Usuario save(Usuario pEntity) {
-		Usuario userSalvo =null;
+	public UserAplication save(UserAplication pEntity) {
+		UserAplication userSalvo =null;
 		
 		if(usuarioRepository.existsByEmail(pEntity.getEmail())) {
 			throw new UsuarioExistException();
 		}
 		
 		if(!pEntity.getCargo().equals("M") || !pEntity.getCargo().equals("R")) {
-			Long codigo = usuarioRepository.findMaxCodigoByEstabelecimento(pEntity.getEstabelecimento().getId());
+			Long codigo = usuarioRepository.findMaxCodigoBySetor(pEntity.getSetor().getId());
 			if(codigo==null) {
 				codigo=1l;
 			}else {
@@ -49,8 +48,8 @@ public class UsuarioService {
 		
 	}
 	
-	public Usuario update( Usuario pEntity) {
-		Usuario usuarioSalvo = usuarioRepository.findById(pEntity.getId()).get();
+	public UserAplication update( UserAplication pEntity) {
+		UserAplication usuarioSalvo = usuarioRepository.findById(pEntity.getId()).get();
 		
 		BeanUtils.copyProperties(pEntity, usuarioSalvo,"id");
 		usuarioSalvo = usuarioRepository.save(usuarioSalvo);
@@ -58,12 +57,12 @@ public class UsuarioService {
 		return usuarioSalvo;
 	}
 	
-	public void isAtive(Usuario pEntity) {
+	public void isAtive(UserAplication pEntity) {
 		update(pEntity);
 	}
 	
 	public boolean recuperaSenha(String email) {
-		Usuario user = usuarioRepository.findByEmail(email);
+		UserAplication user = usuarioRepository.findByEmail(email);
 		if(user != null) {
 			try {
 				emailService.sendEmailSimples(user.getEmail(), "Recuperação de senha", "Caro(a) "+user.getNome()+",\n\r"
@@ -91,7 +90,7 @@ public class UsuarioService {
 		
 	}
 	
-	public Usuario findById(Long id) {
+	public UserAplication findById(Long id) {
 		return usuarioRepository.getById(id);
 	}
 

@@ -39,7 +39,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Produto {
+public class Product {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -54,7 +54,7 @@ public class Produto {
 	@JsonIgnore
 	@NotNull
 	@ManyToOne
-    private Estabelecimento estabelecimento;
+    private Setor setor;
 	
 	@NotBlank
 	private String nome;
@@ -64,67 +64,23 @@ public class Produto {
 	
     @JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
-    private Date dtCreate = new Date();
+    private Date dateCreate = new Date();
     
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dtUpdate = UtilsHorasData.subtrair(new Date(), 3);
-    
-    @JsonFormat(pattern="yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    private Date dtVencimento;
-    
-	private String nomeForn;
-    
-    @JsonFormat(pattern="yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    private Date dtUltimaCompra;
-    
+    private Date dateUpdate = UtilsHorasData.subtrair(new Date(), 3);
     
     @Size(max=3)
     private String unid="UN";
     
-    private Float fatorConversao=1.0F;
-    
-	private Float saldoMinimo=1.0F;
-	
-	private Float quantMinAtacado;
 	
 	@NotNull
-	private BigDecimal precoCusto;
+	private BigDecimal price;
 	
-	@NotNull
-	private BigDecimal precoVenda;
-	
-    @Column(name = "image", columnDefinition = "text")
-	private String image;
-    
-	@NotNull
-	private BigDecimal precoAtacado;
 	
 	@Size(max=1)
 	private String status="S"; //paused ou active
 	
-	// impostos
-	private String cfop;
-	private String ncm;
-	private String cest;
-
-	private String cstIcms;
-	private Float porcIcms;
-	private Float valorIcms;
-
-	private String cstIpi;
-	private Float porcIpi;
-	private Float valorIpi;
-
-	private String cstPis;
-	private Float porcPis;
-	private Float valorPis;
-
-	private String cstCofins;
-	private Float porcConfis;
-	private Float valorCofins;
 	
 	private Integer deleted=0;
 
@@ -132,14 +88,9 @@ public class Produto {
 //	@JoinColumn(name="produto_id")
 //	private List<ImagemProduto> imagens = new ArrayList<>();
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="categoria_id")
-	private Categoria categoria;
-	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pedido")
-	private List<ItemPedido> pedidos = new ArrayList<ItemPedido>();
+	@OneToMany(mappedBy = "order")
+	private List<OrderItem> orders = new ArrayList<OrderItem>();
 	
 
 }

@@ -1,13 +1,12 @@
 package com.api.services;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.api.domain.ImagemProduto;
-import com.api.domain.Produto;
-import com.api.repository.ImagemProdutoRepository;
+
+import com.api.domain.Product;
 import com.api.repository.ProdutoRepository;
 import com.api.services.exceptions.ItemExistException;
 import com.api.services.filter.ProdutoQueryImpl;
@@ -23,16 +22,16 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoQueryImpl produtoQueryImpl;
 
-	public Produto save(Produto pEntity){
+	public Product save(Product pEntity){
 		if(produtoRepository.existsByEan(pEntity.getEan())) {
 			throw new ItemExistException();
 		}
-		Produto produtoSalvo = produtoRepository.save(pEntity);
+		Product produtoSalvo = produtoRepository.save(pEntity);
 		return produtoSalvo;
 	}
 
-	public Produto update(Long pID, Produto pEntity) {
-		Produto produtoSalvo = produtoRepository.findById(pID).get();
+	public Product update(Long pID, Product pEntity) {
+		Product produtoSalvo = produtoRepository.findById(pID).get();
 		
 		BeanUtils.copyProperties(pEntity, produtoSalvo,"id");
 		produtoRepository.save(produtoSalvo); 
@@ -40,12 +39,12 @@ public class ProdutoService {
 		return produtoSalvo;
 	}
 	
-	public void deleteAll(List<Produto> pList) {
+	public void deleteAll(List<Product> pList) {
 		produtoRepository.deleteAll(pList);
 		
 	}
 	
-	public List<Produto> findFilterProdutos(String tipoFilter, String dados){
+	public List<Product> findFilterProdutos(String tipoFilter, String dados){
 		return produtoQueryImpl.findFilterProduto(tipoFilter, dados);
 	}
 	

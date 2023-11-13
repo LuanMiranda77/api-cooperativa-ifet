@@ -10,32 +10,31 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.domain.Estabelecimento;
-import com.api.domain.Usuario;
+import com.api.domain.UserAplication;
 import com.api.domain.enuns.StatusUsuario;
 
 //@autor Jadson Feitosa #AE-40
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UsuarioRepository extends JpaRepository<UserAplication, Long> {
 
-	public Usuario findByEmail(String email);
+	public UserAplication findByEmail(String email);
 	
 	public boolean existsByEmail(String email);
 	
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	@Query("Update Usuario user SET user.status =:status where user.id =:id")
+	@Query("Update UserAplication user SET user.status =:status where user.id =:id")
 	public void updateStatus(@Param("id") Long id, @Param("status") StatusUsuario status);
 	
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	@Query(value="update usuario set status =:status where estabelecimento_id =:id" , nativeQuery = true)
-	public void updateStatusByEstabelecimento(@Param("id") Long id, @Param("status") String status);
+	@Query(value="update UserAplication set status =:status where setor_id =:id" , nativeQuery = true)
+	public void updateStatusBySetor(@Param("id") Long id, @Param("status") String status);
 	
-	@Query(value = "SELECT * FROM usuario  where estabelecimento_id=:estabelecimento", nativeQuery = true)
-	public List<Usuario> findByEstabelecimento(Long estabelecimento);
+	@Query(value = "SELECT * FROM UserAplication  where setor_id=:setor", nativeQuery = true)
+	public List<UserAplication> findBySetor(Long setor);
 	
-	@Query(value = "SELECT MAX(codigo) as codigo FROM usuario  where estabelecimento_id=:estabelecimento", nativeQuery = true)
-	public Long findMaxCodigoByEstabelecimento(Long estabelecimento);
+	@Query(value = "SELECT MAX(codigo) as codigo FROM UserAplication  where setor_id=:setor", nativeQuery = true)
+	public Long findMaxCodigoBySetor(Long setor);
 }

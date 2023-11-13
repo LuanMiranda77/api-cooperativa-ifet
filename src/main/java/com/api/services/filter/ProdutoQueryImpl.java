@@ -13,8 +13,8 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Service;
 
-import com.api.domain.Pedido;
-import com.api.domain.Produto;
+import com.api.domain.OrderSale;
+import com.api.domain.Product;
 
 @Service
 public class ProdutoQueryImpl {
@@ -22,13 +22,13 @@ public class ProdutoQueryImpl {
 	@PersistenceContext
 	private EntityManager manager;
 	
-	public List<Produto> findFilterProduto(String tipoFilter, String dados){
+	public List<Product> findFilterProduto(String tipoFilter, String dados){
 		
-		List<Produto> produtos = new ArrayList<>();
+		List<Product> produtos = new ArrayList<>();
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		
-		CriteriaQuery<Produto> query = builder.createQuery(Produto.class);
-		Root<Produto> root = query.from(Produto.class);
+		CriteriaQuery<Product> query = builder.createQuery(Product.class);
+		Root<Product> root = query.from(Product.class);
 		
 		if(tipoFilter.equals("ESTRELA")) {
 			int estrelas = Integer.parseInt(dados);

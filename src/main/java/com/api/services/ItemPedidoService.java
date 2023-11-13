@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.domain.ItemPedido;
+import com.api.domain.OrderItem;
 import com.api.repository.ItemPedidoRepository;
 
 //@autor Jadson Feitosa #AE-36
@@ -15,12 +15,12 @@ public class ItemPedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
-	public ItemPedido save(ItemPedido pEntity) {
+	public OrderItem save(OrderItem pEntity) {
 		return itemPedidoRepository.save(pEntity);
 	}
 	
-	public ItemPedido update(ItemPedido pEntity) {
-		ItemPedido itemPedidoSalvo = itemPedidoRepository.findById(pEntity.getId()).get();
+	public OrderItem update(OrderItem pEntity) {
+		OrderItem itemPedidoSalvo = itemPedidoRepository.findById(pEntity.getId()).get();
 		
 		BeanUtils.copyProperties(pEntity, itemPedidoSalvo, "id");
 		itemPedidoRepository.save(itemPedidoSalvo);
@@ -29,7 +29,7 @@ public class ItemPedidoService {
 		
 	}
 	
-	public void isAtive(ItemPedido pEntity) {
+	public void isAtive(OrderItem pEntity) {
 		update(pEntity);
 	}
 

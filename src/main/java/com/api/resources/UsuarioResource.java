@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.domain.Estabelecimento;
-import com.api.domain.Usuario;
+import com.api.domain.Setor;
+import com.api.domain.UserAplication;
 import com.api.domain.TO.UserLoginTO;
-import com.api.domain.TO.UsuarioTO;
+import com.api.domain.TO.UserTO;
 import com.api.domain.enuns.StatusUsuario;
-import com.api.repository.EstabelecimentoRepository;
+import com.api.repository.SetorRepository;
 import com.api.repository.UsuarioRepository;
 import com.api.resources.exception.LoginException;
 import com.api.services.UsuarioService;
@@ -34,7 +34,7 @@ import com.api.services.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuario")
-public class UsuarioResource implements ResourceBase<Usuario, Long> {
+public class UsuarioResource implements ResourceBase<UserAplication, Long> {
 	
 	
 	@Autowired
@@ -44,11 +44,11 @@ public class UsuarioResource implements ResourceBase<Usuario, Long> {
 	private UsuarioRepository usuarioRepository;
 	
 	@Autowired 
-	private EstabelecimentoRepository estabelecimentoRepository;
+	private SetorRepository estabelecimentoRepository;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Usuario> login(@RequestBody UserLoginTO pEntity, HttpServletResponse response){
-		Usuario userSalvo = usuarioRepository.findByEmail(pEntity.getEmail());
+	public ResponseEntity<UserAplication> login(@RequestBody UserLoginTO pEntity, HttpServletResponse response){
+		UserAplication userSalvo = usuarioRepository.findByEmail(pEntity.getEmail());
 		
 		if(userSalvo != null) {
 			if(userSalvo.getEmail().equals(pEntity.getEmail()) 
@@ -68,11 +68,11 @@ public class UsuarioResource implements ResourceBase<Usuario, Long> {
 //	Salvar Usuario
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Usuario> save(@Valid @RequestBody UsuarioTO pEntity, HttpServletResponse response) {
-		Estabelecimento estabelecimento = estabelecimentoRepository.getById(pEntity.getEstabelecimento());
-		Usuario user = pEntity.converteParaEntidadeSemEstabelecimento(pEntity);
-		user.setEstabelecimento(estabelecimento);
-		Usuario usuarioSalvo = usuarioService.save(user);
+	public ResponseEntity<UserAplication> save(@Valid @RequestBody UserTO pEntity, HttpServletResponse response) {
+		Setor setor = estabelecimentoRepository.getById(pEntity.getEstabelecimento());
+		UserAplication user = pEntity.converteParaEntidadeSemEstabelecimento(pEntity);
+		user.setSetor(setor);
+		UserAplication usuarioSalvo = usuarioService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
 	}
 	
@@ -94,17 +94,17 @@ public class UsuarioResource implements ResourceBase<Usuario, Long> {
 	
 //	Atualizar Usuario
 	@PutMapping
-	public ResponseEntity<Usuario> update(@Valid @RequestBody UsuarioTO pEntity) {
-		Estabelecimento estabelecimento = estabelecimentoRepository.getById(pEntity.getEstabelecimento());
-		Usuario user = pEntity.converteParaEntidadeSemEstabelecimento(pEntity);
-		user.setEstabelecimento(estabelecimento);
-		Usuario usuarioSalvo = usuarioService.update(user);
+	public ResponseEntity<UserAplication> update(@Valid @RequestBody UserTO pEntity) {
+		Setor setor = estabelecimentoRepository.getById(pEntity.getEstabelecimento());
+		UserAplication user = pEntity.converteParaEntidadeSemEstabelecimento(pEntity);
+		user.setSetor(setor);
+		UserAplication usuarioSalvo = usuarioService.update(user);
 		return ResponseEntity.ok(usuarioSalvo);
 	}
 	
 //	Atualizar status
 	@PutMapping("/status/{id}/{status}")
-	public ResponseEntity<Usuario> updateStatus(@PathVariable Long id, @PathVariable StatusUsuario status) {
+	public ResponseEntity<UserAplication> updateStatus(@PathVariable Long id, @PathVariable StatusUsuario status) {
 		usuarioRepository.updateStatus(id,status);
 		return ResponseEntity.ok(null);
 	}
@@ -118,39 +118,39 @@ public class UsuarioResource implements ResourceBase<Usuario, Long> {
 
 //	Filtro por ID
 	@GetMapping("/{pID}")
-	public ResponseEntity<Usuario> findById(@PathVariable Long pID) {
-		Usuario usuarioSalvo = usuarioRepository.findById(pID).get();
+	public ResponseEntity<UserAplication> findById(@PathVariable Long pID) {
+		UserAplication usuarioSalvo = usuarioRepository.findById(pID).get();
 		usuarioSalvo.setPassword(null);
 		return ResponseEntity.ok(usuarioSalvo);
 	}
 
 //  Listar usuario
 	@GetMapping
-	public List<Usuario> findAllList() {
+	public List<UserAplication> findAllList() {
 		return usuarioRepository.findAll();
 	}
 
 	@GetMapping("/estabelecimento/{pID}")
-	public List<Usuario> findByEstabelecimento(@PathVariable Long pID) {
-		return usuarioRepository.findByEstabelecimento(pID);
+	public List<UserAplication> findByEstabelecimento(@PathVariable Long pID) {
+		return usuarioRepository.findBySetor(pID);
 	}
 	
 	@Override
-	public Page<Usuario> findAllPage(Usuario pFilter, Pageable pPage) {
+	public Page<UserAplication> findAllPage(UserAplication pFilter, Pageable pPage) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public ResponseEntity<Usuario> save(@Valid Usuario pEntity, HttpServletResponse response) {
+	public ResponseEntity<UserAplication> save(@Valid UserAplication pEntity, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public ResponseEntity<Usuario> update(@Valid Long pID, Usuario pEntity) {
+	public ResponseEntity<UserAplication> update(@Valid Long pID, UserAplication pEntity) {
 		// TODO Auto-generated method stub
 		return null;
 	}

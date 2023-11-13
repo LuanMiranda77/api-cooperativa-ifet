@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.domain.ItemPedido;
+import com.api.domain.OrderItem;
 import com.api.repository.ItemPedidoRepository;
 import com.api.services.ItemPedidoService;
 
@@ -26,7 +26,7 @@ import com.api.services.ItemPedidoService;
 
 @RestController
 @RequestMapping("/api/intemPedido")
-public class ItemPedidoResource implements ResourceBase<ItemPedido, Long>{
+public class ItemPedidoResource implements ResourceBase<OrderItem, Long>{
 	
 	@Autowired
 	private ItemPedidoService itemPedidoResource;
@@ -37,15 +37,15 @@ public class ItemPedidoResource implements ResourceBase<ItemPedido, Long>{
 //	Salvar itemPedido
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<ItemPedido> save(@Valid ItemPedido pEntity, HttpServletResponse response) {
-		ItemPedido itemPedidoSalvo = itemPedidoResource.save(pEntity);
+	public ResponseEntity<OrderItem> save(@Valid OrderItem pEntity, HttpServletResponse response) {
+		OrderItem itemPedidoSalvo = itemPedidoResource.save(pEntity);
 		return ResponseEntity.ok(itemPedidoSalvo);
 	}
 
 //	Atualizar itemPedido
 	@PutMapping
-	public ResponseEntity<ItemPedido> update(@Valid Long pID, ItemPedido pEntity) {
-		ItemPedido itemPedidoSalvo = itemPedidoResource.update(pEntity);
+	public ResponseEntity<OrderItem> update(@Valid Long pID, OrderItem pEntity) {
+		OrderItem itemPedidoSalvo = itemPedidoResource.update(pEntity);
 		return ResponseEntity.ok(itemPedidoSalvo);
 	}
 
@@ -57,17 +57,17 @@ public class ItemPedidoResource implements ResourceBase<ItemPedido, Long>{
 	}
 
 //	Filtro por ID
-	public ResponseEntity<ItemPedido> findById(Long pID) {
+	public ResponseEntity<OrderItem> findById(Long pID) {
 		return  ResponseEntity.ok(itemPedidoRepository.findById(pID).get());
 	}
 
 //	Listar itemPedido
 	@GetMapping
-	public List<ItemPedido> findAllList() {
+	public List<OrderItem> findAllList() {
 		return itemPedidoRepository.findAll();
 	}
 
-	public Page<ItemPedido> findAllPage(ItemPedido pFilter, Pageable pPage) {
+	public Page<OrderItem> findAllPage(OrderItem pFilter, Pageable pPage) {
 		return null;
 	}
 	

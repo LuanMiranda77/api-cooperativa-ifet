@@ -23,12 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.api.domain.ItemMarkeplace;
-import com.api.domain.Pedido;
-import com.api.domain.Produto;
-import com.api.domain.Usuario;
-import com.api.domain.enuns.EstatusPedido;
-import com.api.repository.ItemMarketRepository;
+import com.api.domain.Product;
 import com.api.repository.ProdutoRepository;
 import com.api.services.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/api/produto")
-public class ProdutoResource implements ResourceBase<Produto, Long>{
+public class ProdutoResource implements ResourceBase<Product, Long>{
 	
 	@Autowired
 	private ProdutoService produtoService;
@@ -49,8 +44,8 @@ public class ProdutoResource implements ResourceBase<Produto, Long>{
 //	Salvar Produto
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Produto> save(@Valid @RequestBody Produto pEntity, HttpServletResponse response) {
-		Produto produtoSalvo = null;
+	public ResponseEntity<Product> save(@Valid @RequestBody Product pEntity, HttpServletResponse response) {
+		Product produtoSalvo = null;
 		try {
 			produtoSalvo = produtoService.save(pEntity);
 		} catch (Exception e) {
@@ -63,8 +58,8 @@ public class ProdutoResource implements ResourceBase<Produto, Long>{
 
 //	Atualizar entidade 
 	@PutMapping("/{pID}")
-	public ResponseEntity<Produto> update(@Valid @PathVariable Long pID, @RequestBody Produto pEntity) {
-		Produto produtoSalvo = produtoService.update(pID, pEntity);
+	public ResponseEntity<Product> update(@Valid @PathVariable Long pID, @RequestBody Product pEntity) {
+		Product produtoSalvo = produtoService.update(pID, pEntity);
 		return ResponseEntity.ok(produtoSalvo);
 	}
 
@@ -77,46 +72,46 @@ public class ProdutoResource implements ResourceBase<Produto, Long>{
 
 //	Filtro por ID
 	@GetMapping("/{pID}")
-	public ResponseEntity<Produto> findById(@PathVariable Long pID) {
+	public ResponseEntity<Product> findById(@PathVariable Long pID) {
 		return ResponseEntity.ok(produtoRepository.findById(pID).get());
 	}
 	
 //	Filtro por ID
 	@GetMapping("/busca/{ptitulo}")
-	public ResponseEntity<List<Produto>> findByTitulo(@PathVariable String ptitulo) {
-		List<Produto> lista = produtoRepository.findProdutoByNomeContains(ptitulo);
+	public ResponseEntity<List<Product>> findByTitulo(@PathVariable String ptitulo) {
+		List<Product> lista = produtoRepository.findProdutoByNomeContains(ptitulo);
 		
 		return ResponseEntity.ok(lista);
 	}
 	
 	@PostMapping("/deleteall")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAll( @RequestBody List<Produto> pList) {
+	public void deleteAll( @RequestBody List<Product> pList) {
 		produtoRepository.deleteAll(pList);
 	}
 
 	
 	@GetMapping("/filter/{tipoFilter}&{dados}")
-	public List<Produto> findFilterProdutos(@PathVariable String tipoFilter, @PathVariable String dados){
+	public List<Product> findFilterProdutos(@PathVariable String tipoFilter, @PathVariable String dados){
 		return produtoService.findFilterProdutos(tipoFilter, dados);
 	}
 	
 	@GetMapping("/estabelecimento/{pID}")
-	public List<Produto> findByEstabelecimento(@PathVariable Long pID) {
+	public List<Product> findByEstabelecimento(@PathVariable Long pID) {
 		return produtoRepository.findByEstabelecimento(pID);
 	}
 	
-	@GetMapping("/categoria/{id}")
-	public List<Produto> findProdutosByCategoria(@PathVariable Long id){
-		return produtoRepository.findProdutoByCategoria(id);
-	}
+//	@GetMapping("/categoria/{id}")
+//	public List<Product> findProdutosByCategoria(@PathVariable Long id){
+//		return produtoRepository.findProdutoByCategoria(id);
+//	}
 	
-	public Page<Produto> findAllPage(Produto pFilter, Pageable pPage) {
+	public Page<Product> findAllPage(Product pFilter, Pageable pPage) {
 		return null;
 	}
 
 	@GetMapping
-	public List<Produto> findAllList() {
+	public List<Product> findAllList() {
 		return produtoRepository.findAll();
 	}
 	
@@ -124,10 +119,10 @@ public class ProdutoResource implements ResourceBase<Produto, Long>{
     public ResponseEntity<String> receiveData(String pessoaJson, MultipartFile foto) {
 
         ObjectMapper mapper = new ObjectMapper();
-        Produto pessoa = null;
+        Product pessoa = null;
 
         try {
-            pessoa = mapper.readValue(pessoaJson, Produto.class);
+            pessoa = mapper.readValue(pessoaJson, Product.class);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Não foi possível ler o json");
         }

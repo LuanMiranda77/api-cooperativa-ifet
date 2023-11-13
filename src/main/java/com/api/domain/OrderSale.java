@@ -20,15 +20,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.api.domain.enuns.EstatusPedido;
+import com.api.domain.enuns.OrderStatus;
 import com.api.utils.UtilsHorasData;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -36,7 +35,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Pedido implements Serializable {
+public class OrderSale implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -45,48 +44,49 @@ public class Pedido implements Serializable {
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataDeCriacao;
+	private Date dateCreate;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataFechamento;
+	private Date dateClose;
 	
 	
 	@NotNull
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "pagamento_id")
-	private Pagamento pagamento;
+//	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "id_payment")
+	private Payment pagamento;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="cliente_id")
-	private Cliente cliente;
-	
-	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "endereco_id")
-	private EnderecoEntrega enderecoEntrega;
+//	@NotNull
+//	@ManyToOne
+//	@JoinColumn(name="cliente_id")
+//	private Cliente cliente;
 	
 	@NotNull
 //	@JsonIgnore
-	@OneToMany(mappedBy = "produto")
-	private List<ItemPedido> produtos = new ArrayList<ItemPedido>();
+	@OneToMany(mappedBy = "product")
+	private List<OrderItem> products = new ArrayList<OrderItem>();
 	
 	private BigDecimal valorTotal = new BigDecimal(0);
 	
 	private BigDecimal valorDesconto = new BigDecimal(0);
 	
-	private BigDecimal valorFrete = new BigDecimal(0);
-	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private EstatusPedido estatus;
+	private OrderStatus status;
 	
-	private String codigoRastreio;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="id_user")
+	private UserAplication userAplication;
 	
 	@PrePersist
-	public void setDataCriacao() {
-		this.dataDeCriacao = UtilsHorasData.subtrair(new Date(), 3);
+	public void setDateCreate() {
+		this.dateCreate = UtilsHorasData.subtrair(new Date(), 3);
 	}
 	
+	@PreUpdate
+	public void setDateUpdate() {
+		this.dateClose = UtilsHorasData.subtrair(new Date(), 3);
+	}
+		
 }

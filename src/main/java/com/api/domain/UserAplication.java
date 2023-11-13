@@ -2,9 +2,7 @@ package com.api.domain;
 
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,7 +22,6 @@ import javax.validation.constraints.Size;
 import com.api.domain.enuns.StatusUsuario;
 import com.api.utils.UtilsHorasData;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -34,17 +31,19 @@ import lombok.Data;
 @Entity
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Usuario {
+public class UserAplication {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	private String cpf;
 	
 	private Long codigo;
 	
-	private String cpf;
-	
 	private String nome;
+	
+	private String userName;
 	
 	@NotBlank
 	@Email
@@ -52,11 +51,11 @@ public class Usuario {
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataCriacao;
+	private Date dateCreate;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataAtualizacao;
+	private Date dateUpdate;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -73,31 +72,24 @@ public class Usuario {
 	
 	private String celular;
 	
-	@Size(max=1)
+	@Size(max=1) // M = master, V = vendedor, C = capitador 
 	private String cargo;
 	
 	private String roles;
 	
-	
 	@OneToOne
 //	(cascade = CascadeType.ALL)
-	private Estabelecimento estabelecimento;
+	private Setor setor;
 	
-	@JsonIgnore
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date sincTemp;
 
 	@PrePersist
 	public void dataInicial() {
-		this.dataCriacao = UtilsHorasData.subtrair(new Date(), 3);
-		this.sincTemp = UtilsHorasData.subtrair(new Date(), 3);
+		this.dateCreate = UtilsHorasData.subtrair(new Date(), 3);
 	}
 	
 	@PreUpdate
 	public void dataAtualizacao() {
-		this.dataAtualizacao = UtilsHorasData.subtrair(new Date(), 3);
-		this.sincTemp = UtilsHorasData.subtrair(new Date(), 3);
+		this.dateUpdate = UtilsHorasData.subtrair(new Date(), 3);
 	}
 	
 	

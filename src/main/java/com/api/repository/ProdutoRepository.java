@@ -11,28 +11,28 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.domain.Categoria;
-import com.api.domain.Produto;
-import com.api.domain.Usuario;
-import com.api.domain.enuns.EstatusPedido;
+import com.api.domain.Product;
+import com.api.domain.UserAplication;
+import com.api.domain.enuns.OrderStatus;
 
 //@autor Jadson Feitosa #29
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+public interface ProdutoRepository extends JpaRepository<Product, Long> {
 	
-	public Produto findByEan(String codigoBarras);
+	public Product findByEan(String codigoBarras);
 	
 	public boolean existsByEan(String codigoBarras);
 	
-	public List<Produto> findProdutoByNomeContains(String title);
+	public List<Product> findProdutoByNomeContains(String title);
 	
 	@Query(value = "SELECT * FROM produto where estabelecimento_id=:estabelecimento", nativeQuery = true)
-	public List<Produto> findByEstabelecimento(Long estabelecimento);
+	public List<Product> findByEstabelecimento(Long estabelecimento);
 	
-	@Transactional
-	@Modifying(clearAutomatically = true)
-	@Query("from Produto produto where produto.categoria.id =:id")
-	public List<Produto> findProdutoByCategoria(@Param("id") Long id);
+//	@Transactional
+//	@Modifying(clearAutomatically = true)
+//	@Query("from Produto produto where produto.categoria.id =:id")
+//	public List<Product> findProdutoByCategoria(@Param("id") Long id);
 	
 //	@Transactional
 //	@Modifying(clearAutomatically = true)

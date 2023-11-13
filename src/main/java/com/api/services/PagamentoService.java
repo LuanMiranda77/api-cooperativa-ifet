@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.domain.Pagamento;
+import com.api.domain.Payment;
 import com.api.repository.PagamentoRepository;
 
 //@autor Jadson Feitosa #AE-36
@@ -15,12 +15,12 @@ public class PagamentoService {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 	
-	public Pagamento save(Pagamento pEntity) {
+	public Payment save(Payment pEntity) {
 		return pagamentoRepository.save(pEntity);
 	}
 	
-	public Pagamento update(Pagamento pEntity) {
-		Pagamento pagamentoSalvo = pagamentoRepository.findById(pEntity.getId()).get();
+	public Payment update(Payment pEntity) {
+		Payment pagamentoSalvo = pagamentoRepository.findById(pEntity.getId()).get();
 		
 		BeanUtils.copyProperties(pEntity, pagamentoSalvo, "id");
 		pagamentoRepository.save(pagamentoSalvo);
@@ -29,7 +29,7 @@ public class PagamentoService {
 		
 	}
 	
-	public void isAtive(Pagamento pEntity) {
+	public void isAtive(Payment pEntity) {
 		update(pEntity);
 	}
 

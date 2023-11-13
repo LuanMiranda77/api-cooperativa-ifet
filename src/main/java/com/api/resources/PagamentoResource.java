@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.domain.Pagamento;
+import com.api.domain.Payment;
 import com.api.repository.PagamentoRepository;
 import com.api.services.PagamentoService;
 
@@ -26,7 +26,7 @@ import com.api.services.PagamentoService;
 
 @RestController
 @RequestMapping("/api/pagamento")
-public class PagamentoResource implements ResourceBase<Pagamento, Long>{
+public class PagamentoResource implements ResourceBase<Payment, Long>{
 
 	@Autowired
 	private PagamentoService pagamentoService;
@@ -37,15 +37,15 @@ public class PagamentoResource implements ResourceBase<Pagamento, Long>{
 //	Salvar Pagamento
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Pagamento> save(@Valid Pagamento pEntity, HttpServletResponse response) {
-		Pagamento pagamentoSalvo = pagamentoService.save(pEntity);
+	public ResponseEntity<Payment> save(@Valid Payment pEntity, HttpServletResponse response) {
+		Payment pagamentoSalvo = pagamentoService.save(pEntity);
 		return ResponseEntity.ok(pagamentoSalvo);
 	}
 
 //	Atualizar Pagamento
 	@PutMapping
-	public ResponseEntity<Pagamento> update(@Valid Long pID, Pagamento pEntity) {
-		Pagamento pagamentoSalvo = pagamentoService.update(pEntity);
+	public ResponseEntity<Payment> update(@Valid Long pID, Payment pEntity) {
+		Payment pagamentoSalvo = pagamentoService.update(pEntity);
 		return ResponseEntity.ok(pagamentoSalvo);
 	}
 
@@ -57,17 +57,17 @@ public class PagamentoResource implements ResourceBase<Pagamento, Long>{
 	}
 	
 //	Filtro por ID
-	public ResponseEntity<Pagamento> findById(Long pID) {
+	public ResponseEntity<Payment> findById(Long pID) {
 		return ResponseEntity.ok(pagamentoRepository.findById(pID).get());
 	}
 	
 //	Listar Pagamentos
 	@GetMapping
-	public List<Pagamento> findAllList() {
+	public List<Payment> findAllList() {
 		return pagamentoRepository.findAll();
 	}
 	
-	public Page<Pagamento> findAllPage(Pagamento pFilter, Pageable pPage) {
+	public Page<Payment> findAllPage(Payment pFilter, Pageable pPage) {
 		return null;
 	}
 	

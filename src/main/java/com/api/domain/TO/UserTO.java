@@ -4,15 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
-
-import com.api.domain.Estabelecimento;
-import com.api.domain.Usuario;
+import com.api.domain.UserAplication;
 import com.api.domain.enuns.Roles;
 import com.api.domain.enuns.StatusUsuario;
 
 import lombok.Data;
 @Data
-public class UsuarioTO implements Serializable{
+public class UserTO implements Serializable{
 	
 	/**
 	 * 
@@ -35,11 +33,11 @@ public class UsuarioTO implements Serializable{
 	private Long estabelecimento;
 	private Date sincTemp;
 	
-	public UsuarioTO() {
+	public UserTO() {
 		super();
 	}
 
-	public UsuarioTO(Long id, String nome, String email,String password, Date dataCriacao, Date dataAtualizacao,
+	public UserTO(Long id, String nome, String email,String password, Date dataCriacao, Date dataAtualizacao,
 			StatusUsuario status, String roles) {
 		super();
 		this.id = id;
@@ -54,20 +52,20 @@ public class UsuarioTO implements Serializable{
 	}
 	
 	
-	public Usuario converteParaEntidade(UsuarioTO to) {
-		Usuario usuario = new Usuario();
+	public UserAplication converteParaEntidade(UserTO to) {
+		UserAplication usuario = new UserAplication();
 		BeanUtils.copyProperties(to, usuario,"password");
 		return usuario;
 	}
 	
-	public Usuario converteParaEntidadeSemEstabelecimento(UsuarioTO to) {
-		Usuario usuario = new Usuario();
+	public UserAplication converteParaEntidadeSemEstabelecimento(UserTO to) {
+		UserAplication usuario = new UserAplication();
 		BeanUtils.copyProperties(to, usuario, "estabelecimento");
 		return usuario;
 	}
 
-	public static UsuarioTO converteParaTO(Usuario usuario) {
-		UsuarioTO to = new UsuarioTO();
+	public static UserTO converteParaTO(UserAplication usuario) {
+		UserTO to = new UserTO();
 		BeanUtils.copyProperties(usuario, to, "password");
 		return to;
 	}

@@ -15,9 +15,9 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Service;
 
-import com.api.domain.ItemPedido;
-import com.api.domain.Pedido;
-import com.api.domain.enuns.EstatusPedido;
+import com.api.domain.OrderItem;
+import com.api.domain.OrderSale;
+import com.api.domain.enuns.OrderStatus;
 import com.api.domain.enuns.TipoCliente;
 import com.api.domain.enuns.TipoPagamento;
 import com.api.domain.enuns.TipoPeriodo;
@@ -42,20 +42,20 @@ public class DashboardService {
 
 		dashboard.setTicketMedio(tiketMedia(builder, dataInicio, dataFinal));
 		dashboard.setTotalPedidoRealizado(findPedidoRealizado(builder, dataInicio, dataFinal));
-		dashboard.setTotalPedidoPago(findPedidosByStatusPedido(builder, dataInicio, dataFinal, EstatusPedido.FINALIZADO));
-		dashboard.setTotalPedidoCancelado(findPedidosByStatusPedido(builder, dataInicio, dataFinal, EstatusPedido.CANCELADO));
+		dashboard.setTotalPedidoPago(findPedidosByStatusPedido(builder, dataInicio, dataFinal, OrderStatus.FINALIZADO));
+		dashboard.setTotalPedidoCancelado(findPedidosByStatusPedido(builder, dataInicio, dataFinal, OrderStatus.CANCELADO));
 		dashboard.setTotalGeralMes(dashboard.getTotalPedidoPago().getTotal());
 		dashboard.setTotalGeralMesPassado(totalGeralMesPassado(builder, dataInicio, dataFinal));
-		dashboard.setTotalVarejo(findTotalPedidoByTipoCliente(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO, TipoCliente.VAREJO));
-		dashboard.setTotalVarejoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO, TipoCliente.VAREJO, TipoPagamento.CARTAOCREDITO));
-		dashboard.setTotalVarejoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO, TipoCliente.VAREJO, TipoPagamento.BOLETO));
-		dashboard.setTotalAtacado(findTotalPedidoByTipoCliente(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO, TipoCliente.ATACADO));
-		dashboard.setTotalAtacadoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO, TipoCliente.ATACADO, TipoPagamento.CARTAOCREDITO));
-		dashboard.setTotalAtacadoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO, TipoCliente.ATACADO, TipoPagamento.BOLETO));
+		dashboard.setTotalVarejo(findTotalPedidoByTipoCliente(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO));
+		dashboard.setTotalVarejoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO, TipoPagamento.CARTAOCREDITO));
+		dashboard.setTotalVarejoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO, TipoPagamento.BOLETO));
+		dashboard.setTotalAtacado(findTotalPedidoByTipoCliente(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO));
+		dashboard.setTotalAtacadoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO, TipoPagamento.CARTAOCREDITO));
+		dashboard.setTotalAtacadoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO, TipoPagamento.BOLETO));
 		dashboard.setArrayVendaPorHoras(findTotalPedidoByPeriodo(builder, dataInicio, dataFinal,TipoPeriodo.HORA));
-		dashboard.setArrayVendaPorCategorias(findPedidosByTopDezCategoria(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO));
-		dashboard.setArrayFormasPagamentos(findTotalPedidoByTipoPagamentos(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO));
-		dashboard.setArrayTopClientes(findPedidosByTopDezCliente(builder, dataInicio, dataFinal,EstatusPedido.FINALIZADO));
+		dashboard.setArrayVendaPorCategorias(findPedidosByTopDezCategoria(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO));
+		dashboard.setArrayFormasPagamentos(findTotalPedidoByTipoPagamentos(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO));
+		dashboard.setArrayTopClientes(findPedidosByTopDezCliente(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO));
 		dashboard.setArrayFaturamentoAnual(findTotalPedidoByPeriodo(builder, dataInicio, dataFinal,TipoPeriodo.ANO));
 		dashboard.setArrayFaturamentoMensal(findTotalPedidoByPeriodo(builder, dataInicio, dataFinal,TipoPeriodo.MES));
 
@@ -66,7 +66,7 @@ public class DashboardService {
 
 		Relatorio relatorio = new Relatorio();
 		CriteriaQuery<Relatorio> query = builder.createQuery(Relatorio.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.multiselect(builder.sum(root.<BigDecimal>get("valorTotal")), builder.count(root));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal));
@@ -88,7 +88,7 @@ public class DashboardService {
 
 		Relatorio relatorio = new Relatorio();
 		CriteriaQuery<Relatorio> query = builder.createQuery(Relatorio.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.multiselect(builder.sum(root.<BigDecimal>get("valorTotal")), builder.count(root));
 		query.where(builder.between(root.get("dataDeCriacao"), dataInicio, dataFinal));
@@ -103,11 +103,11 @@ public class DashboardService {
 	}
 
 	public Relatorio findPedidosByStatusPedido(CriteriaBuilder builder, Date dataInicio, Date dataFinal,
-			EstatusPedido estatusPedido) {
+			OrderStatus estatusPedido) {
 
 		Relatorio relatorio = new Relatorio();
 		CriteriaQuery<Relatorio> query = builder.createQuery(Relatorio.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.multiselect(builder.sum(root.<BigDecimal>get("valorTotal")), builder.count(root));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal),
@@ -126,7 +126,7 @@ public class DashboardService {
 
 		BigDecimal total = new BigDecimal(0);
 		CriteriaQuery<Number> query = builder.createQuery(Number.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		Date dtInicio = UtilsMesData.subtrair(dataInicio, 1);
 		dtInicio = UtilsMesData.getPrimeiroDiaMesByData(dtInicio);
@@ -134,7 +134,7 @@ public class DashboardService {
 
 		query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 		query.where(builder.between(root.get("dataFechamento"), dtInicio, dataFinal),
-				builder.and(builder.equal(root.get("estatus"), EstatusPedido.FINALIZADO)));
+				builder.and(builder.equal(root.get("estatus"), OrderStatus.FINALIZADO)));
 
 		total = (BigDecimal) manager.createQuery(query).getSingleResult();
 
@@ -146,11 +146,11 @@ public class DashboardService {
 	}
 
 	public BigDecimal findTotalPedidoByTipoCliente(CriteriaBuilder builder, Date dataInicio, Date dataFinal,
-			EstatusPedido estatusPeido, TipoCliente tipoCliente) {
+			OrderStatus estatusPeido, TipoCliente tipoCliente) {
 
 		BigDecimal total = new BigDecimal(0);
 		CriteriaQuery<Number> query = builder.createQuery(Number.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal),
@@ -167,11 +167,11 @@ public class DashboardService {
 	}
 
 	public BigDecimal findTotalPedidoByTipoClienteByTipoPagamento(CriteriaBuilder builder, Date dataInicio,
-			Date dataFinal, EstatusPedido estatusPeido, TipoCliente tipoCliente, TipoPagamento tipoPagamento) {
+			Date dataFinal, OrderStatus estatusPeido, TipoCliente tipoCliente, TipoPagamento tipoPagamento) {
 
 		BigDecimal total = new BigDecimal(0);
 		CriteriaQuery<Number> query = builder.createQuery(Number.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal),
@@ -191,7 +191,7 @@ public class DashboardService {
 
 		BigDecimal total = new BigDecimal(0);
 		CriteriaQuery<Number> query = builder.createQuery(Number.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 		List<Number> listaResul =  null;
 
 		if (tipoPeriodo.equals(TipoPeriodo.HORA)) {
@@ -204,7 +204,7 @@ public class DashboardService {
 
 				query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 				query.where(builder.between(root.get("dataFechamento"), dtInicio, dtFinal),
-							builder.and(builder.equal(root.get("estatus"), EstatusPedido.FINALIZADO)));
+							builder.and(builder.equal(root.get("estatus"), OrderStatus.FINALIZADO)));
 
 				total = (BigDecimal) manager.createQuery(query).getSingleResult();
 
@@ -226,7 +226,7 @@ public class DashboardService {
 		
 				query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 				query.where(builder.between(root.get("dataFechamento"), dtInicio, dataFinal),
-							builder.and(builder.equal(root.get("estatus"), EstatusPedido.FINALIZADO)));
+							builder.and(builder.equal(root.get("estatus"), OrderStatus.FINALIZADO)));
 
 				total = (BigDecimal) manager.createQuery(query).getSingleResult();
 
@@ -275,7 +275,7 @@ public class DashboardService {
 				
 				query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 				query.where(builder.between(root.get("dataFechamento"), dtInicio, dataFinal),
-							builder.and(builder.equal(root.get("estatus"), EstatusPedido.FINALIZADO)));
+							builder.and(builder.equal(root.get("estatus"), OrderStatus.FINALIZADO)));
 
 				total = (BigDecimal) manager.createQuery(query).getSingleResult();
 
@@ -294,12 +294,12 @@ public class DashboardService {
 	
 	
 	public List<Number> findTotalPedidoByTipoPagamentos(CriteriaBuilder builder, Date dataInicio,
-			Date dataFinal, EstatusPedido estatusPeido) {
+			Date dataFinal, OrderStatus estatusPeido) {
 
 		BigDecimal total = new BigDecimal(0);
 		List<Number> listaResul =  new ArrayList<Number>();
 		CriteriaQuery<Number> query = builder.createQuery(Number.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 		
 		
 
@@ -337,12 +337,12 @@ public class DashboardService {
 	}
 	
 	public List<Clientes> findPedidosByTopDezCliente(CriteriaBuilder builder, Date dataInicio, Date dataFinal,
-			EstatusPedido estatusPedido) {
+			OrderStatus estatusPedido) {
 
 		
 		List<Clientes> clientes = new ArrayList<>();
 		CriteriaQuery<Clientes> query = builder.createQuery(Clientes.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.multiselect(root.get("cliente").get("usuario").get("nome"), builder.sum(root.<BigDecimal>get("valorTotal")));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal),
@@ -362,13 +362,13 @@ public class DashboardService {
 	}
 	
 	public List<Categorias> findPedidosByTopDezCategoria(CriteriaBuilder builder, Date dataInicio, Date dataFinal,
-			EstatusPedido estatusPedido) {
+			OrderStatus estatusPedido) {
 
 		Categorias categoria = new Categorias();
 		
 		List<Categorias> categorias = new ArrayList<>();
 		CriteriaQuery<Categorias> query = builder.createQuery(Categorias.class);
-		Root<ItemPedido> root = query.from(ItemPedido.class);
+		Root<OrderItem> root = query.from(OrderItem.class);
 
 		query.multiselect(root.get("produto").get("categoria").get("nome"),  builder.count(root));
 		query.where(builder.between(root.get("dataVenda"), dataInicio, dataFinal));

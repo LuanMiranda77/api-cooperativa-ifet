@@ -13,10 +13,10 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Service;
 
-import com.api.domain.Cliente;
-import com.api.domain.ItemPedido;
-import com.api.domain.Pedido;
-import com.api.domain.enuns.EstatusPedido;
+import com.api.domain.Client;
+import com.api.domain.OrderItem;
+import com.api.domain.OrderSale;
+import com.api.domain.enuns.OrderStatus;
 
 @Service
 public class PedidoQueryImpl {
@@ -24,13 +24,13 @@ public class PedidoQueryImpl {
 	@PersistenceContext
 	private EntityManager manager;
 
-	public List<Pedido> findPedidosByEstatus(Date dtIni, Date dtFin, EstatusPedido estatusPedido) {
+	public List<OrderSale> findPedidosByEstatus(Date dtIni, Date dtFin, OrderStatus estatusPedido) {
 
-		List<Pedido> pedidos = new ArrayList<>();
+		List<OrderSale> pedidos = new ArrayList<>();
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 
-		CriteriaQuery<Pedido> query = builder.createQuery(Pedido.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		CriteriaQuery<OrderSale> query = builder.createQuery(OrderSale.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.select(root);
 		query.where(builder.between(root.get("dataFechamento"), dtIni, dtFin));
@@ -42,13 +42,13 @@ public class PedidoQueryImpl {
 
 	}
 
-	public List<Pedido> findPedidosByCliente(Date dtIni, Date dtFin, Cliente cliente) {
+	public List<OrderSale> findPedidosByCliente(Date dtIni, Date dtFin, Client cliente) {
 
-		List<Pedido> pedidos = new ArrayList<>();
+		List<OrderSale> pedidos = new ArrayList<>();
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 
-		CriteriaQuery<Pedido> query = builder.createQuery(Pedido.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		CriteriaQuery<OrderSale> query = builder.createQuery(OrderSale.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.select(root);
 		query.where(builder.between(root.get("dataFechamento"), dtIni, dtFin));
@@ -58,26 +58,26 @@ public class PedidoQueryImpl {
 		
 		pedidos.forEach(e -> { 
 			
-			CriteriaQuery<ItemPedido> query1 = builder.createQuery(ItemPedido.class);
-			Root<ItemPedido> root2 = query1.from(ItemPedido.class);
+			CriteriaQuery<OrderItem> query1 = builder.createQuery(OrderItem.class);
+			Root<OrderItem> root2 = query1.from(OrderItem.class);
 			query1.select(root2);
 			query1.where(builder.equal(root2.get("pedido"), e));
-			List<ItemPedido> itens = manager.createQuery(query1).getResultList();
+			List<OrderItem> itens = manager.createQuery(query1).getResultList();
 		
-			e.setProdutos(itens);
+			e.setProducts(itens);
 		});
 
 		return pedidos;
 
 	}
 
-	public List<Pedido> findPedidosByClienteStatus(Date dtIni, Date dtFin, Cliente cliente, EstatusPedido status) {
+	public List<OrderSale> findPedidosByClienteStatus(Date dtIni, Date dtFin, Client cliente, OrderStatus status) {
 
-		List<Pedido> pedidos = new ArrayList<>();
+		List<OrderSale> pedidos = new ArrayList<>();
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 
-		CriteriaQuery<Pedido> query = builder.createQuery(Pedido.class);
-		Root<Pedido> root = query.from(Pedido.class);
+		CriteriaQuery<OrderSale> query = builder.createQuery(OrderSale.class);
+		Root<OrderSale> root = query.from(OrderSale.class);
 
 		query.select(root);
 		query.where(builder.between(root.get("dataFechamento"), dtIni, dtFin));
