@@ -1,6 +1,8 @@
 package com.api.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +23,7 @@ import javax.validation.constraints.Size;
 import com.api.domain.enuns.Regime;
 import com.api.domain.enuns.UF;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -56,5 +60,13 @@ public class Setor {
 	private Date dateUpdate;
 	
 	private Integer deleted;
+	
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "setor")
+//	private List<UserAplication> users = new ArrayList<UserAplication>();
+//	
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "setor")
+//	private List<Product> product = new ArrayList<Product>();
 	
 }

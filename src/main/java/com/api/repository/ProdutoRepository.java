@@ -24,9 +24,9 @@ public interface ProdutoRepository extends JpaRepository<Product, Long> {
 	
 	public boolean existsByEan(String codigoBarras);
 	
-	public List<Product> findProdutoByNomeContains(String title);
+	public List<Product> findProdutoByNameContains(String title);
 	
-	@Query(value = "SELECT * FROM produto where estabelecimento_id=:estabelecimento", nativeQuery = true)
+	@Query(value = "SELECT * FROM produto where setor_id=:estabelecimento", nativeQuery = true)
 	public List<Product> findByEstabelecimento(Long estabelecimento);
 	
 //	@Transactional
