@@ -79,7 +79,7 @@ public class ProdutoResource implements ResourceBase<Product, Long>{
 //	Filtro por ID
 	@GetMapping("/busca/{ptitulo}")
 	public ResponseEntity<List<Product>> findByTitulo(@PathVariable String ptitulo) {
-		List<Product> lista = produtoRepository.findProdutoByNomeContains(ptitulo);
+		List<Product> lista = produtoRepository.findProdutoByNameContains(ptitulo);
 		
 		return ResponseEntity.ok(lista);
 	}

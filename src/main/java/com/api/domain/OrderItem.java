@@ -53,6 +53,11 @@ public class OrderItem implements Serializable {
 	
 	private BigDecimal priceSale;
 	
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name="setor_id")
+	private Setor setor;
+	
 	@PrePersist
 	private void setDateSale() {
 		this.dateSale = UtilsHorasData.subtrair(new Date(), 3);

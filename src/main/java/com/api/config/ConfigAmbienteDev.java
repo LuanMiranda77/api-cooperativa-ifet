@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
 import javax.persistence.Transient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import com.api.domain.OrderSale;
+
 import com.api.domain.OrderItem;
+import com.api.domain.OrderSale;
 import com.api.domain.Payment;
 import com.api.domain.Product;
 import com.api.domain.Setor;
@@ -128,10 +131,10 @@ public class ConfigAmbienteDev {
 			BigDecimal b = new BigDecimal(1.8);
 			produto = new Product();
 			produto.setEan("789654789123");
-			produto.setNome("item-" + i + 1);
+			produto.setName("item-" + i + 1);
 			produto.setCodigo( (long) (i + 1));
-			produto.setUnid("UND");
-			produto.setSaldo((float) i);
+			produto.setMeasure("UND");
+			produto.setBalance((double) i);
 			produtos.add(produto);
 			produto.setId(i + 1l);
 			produto.setPrice(new BigDecimal(23));

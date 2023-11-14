@@ -52,7 +52,7 @@ public class OrderSale implements Serializable {
 	
 	
 	@NotNull
-//	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "id_payment")
 	private Payment pagamento;
 	

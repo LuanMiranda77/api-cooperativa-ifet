@@ -1,58 +1,51 @@
 package com.api.domain;
 
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.api.domain.enuns.StatusUsuario;
 import com.api.utils.UtilsHorasData;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
-//@autor Jadson Feitosa #AE-42	
+//@autor Jadson Feitosa #40
 
 @Entity
 @Data
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class UserAplication {
-	
+public class Feedstock {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	private String cpf;
-	
-	private Long codigo;
-	
-	private String nome;
-	
-	private String lastName;
-	
-	private String userName;
 	
 	@NotBlank
-	@Email
-	private String email;
+	@Size(min=11)
+	private String codeBar;
+	
+	private String name;
+	
+	//saldo
+	private Double balance;
+	
+	//medida
+	private String measure;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -62,40 +55,27 @@ public class UserAplication {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateUpdate;
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date acesso;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private StatusUsuario status;
-	
-//	@JsonIgnore
-	@NotBlank
-	@Size(min = 6)
-	private String password;
-	
-	private String celular;
-	
-	@Size(max=1) // M = master, V = vendedor, C = capitador 
-	private String cargo;
-	
-	private String roles;
 	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="setor_id")
 	private Setor setor;
 	
+	@JsonIgnore
+	@OneToMany
+	@JoinColumn(name="feedstock_id")
+	private List<Product> products = new ArrayList<Product>();
+	
+	private Integer deleted = 0;
+	
 	@PrePersist
-	public void dataInicial() {
+	public void setDateCreate() {
 		this.dateCreate = UtilsHorasData.subtrair(new Date(), 3);
 	}
 	
 	@PreUpdate
-	public void dataAtualizacao() {
+	public void setDateUpdate() {
 		this.dateUpdate = UtilsHorasData.subtrair(new Date(), 3);
 	}
-	
-	
+
 }
