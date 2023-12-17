@@ -19,7 +19,7 @@ import com.api.domain.OrderItem;
 import com.api.domain.OrderSale;
 import com.api.domain.enuns.OrderStatus;
 import com.api.domain.enuns.TipoCliente;
-import com.api.domain.enuns.TipoPagamento;
+import com.api.domain.enuns.TypePayment;
 import com.api.domain.enuns.TipoPeriodo;
 import com.api.services.filter.Categorias;
 import com.api.services.filter.Clientes;
@@ -47,11 +47,11 @@ public class DashboardService {
 		dashboard.setTotalGeralMes(dashboard.getTotalPedidoPago().getTotal());
 		dashboard.setTotalGeralMesPassado(totalGeralMesPassado(builder, dataInicio, dataFinal));
 		dashboard.setTotalVarejo(findTotalPedidoByTipoCliente(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO));
-		dashboard.setTotalVarejoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO, TipoPagamento.CARTAOCREDITO));
-		dashboard.setTotalVarejoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO, TipoPagamento.BOLETO));
+		dashboard.setTotalVarejoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO, TypePayment.CARTAO_CREDITO));
+		dashboard.setTotalVarejoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.VAREJO, TypePayment.BOLETO));
 		dashboard.setTotalAtacado(findTotalPedidoByTipoCliente(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO));
-		dashboard.setTotalAtacadoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO, TipoPagamento.CARTAOCREDITO));
-		dashboard.setTotalAtacadoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO, TipoPagamento.BOLETO));
+		dashboard.setTotalAtacadoCredito(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO, TypePayment.CARTAO_CREDITO));
+		dashboard.setTotalAtacadoBoleto(findTotalPedidoByTipoClienteByTipoPagamento(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO, TipoCliente.ATACADO, TypePayment.BOLETO));
 		dashboard.setArrayVendaPorHoras(findTotalPedidoByPeriodo(builder, dataInicio, dataFinal,TipoPeriodo.HORA));
 		dashboard.setArrayVendaPorCategorias(findPedidosByTopDezCategoria(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO));
 		dashboard.setArrayFormasPagamentos(findTotalPedidoByTipoPagamentos(builder, dataInicio, dataFinal,OrderStatus.FINALIZADO));
@@ -167,7 +167,7 @@ public class DashboardService {
 	}
 
 	public BigDecimal findTotalPedidoByTipoClienteByTipoPagamento(CriteriaBuilder builder, Date dataInicio,
-			Date dataFinal, OrderStatus estatusPeido, TipoCliente tipoCliente, TipoPagamento tipoPagamento) {
+			Date dataFinal, OrderStatus estatusPeido, TipoCliente tipoCliente, TypePayment tipoPagamento) {
 
 		BigDecimal total = new BigDecimal(0);
 		CriteriaQuery<Number> query = builder.createQuery(Number.class);
@@ -306,7 +306,7 @@ public class DashboardService {
 		query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal),
 					builder.and(builder.equal(root.get("estatus"), estatusPeido),
-					builder.and(builder.equal(root.get("pagamento").get("tipo"), TipoPagamento.BOLETO))));
+					builder.and(builder.equal(root.get("pagamento").get("tipo"), TypePayment.BOLETO))));
 
 		total = (BigDecimal) manager.createQuery(query).getSingleResult();
 		
@@ -320,7 +320,7 @@ public class DashboardService {
 		query.select(builder.sum(root.<BigDecimal>get("valorTotal")));
 		query.where(builder.between(root.get("dataFechamento"), dataInicio, dataFinal),
 					builder.and(builder.equal(root.get("estatus"), estatusPeido),
-					builder.and(builder.equal(root.get("pagamento").get("tipo"), TipoPagamento.CARTAOCREDITO))));
+					builder.and(builder.equal(root.get("pagamento").get("tipo"), TypePayment.CARTAO_CREDITO))));
 
 		total = (BigDecimal) manager.createQuery(query).getSingleResult();
 		

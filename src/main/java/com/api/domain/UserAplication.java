@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.api.domain.enuns.StatusUsuario;
+import com.api.domain.enuns.TipoUsuario;
 import com.api.utils.UtilsHorasData;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -39,12 +40,8 @@ public class UserAplication {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	private String cpf;
 	
-	private Long codigo;
-	
-	private String nome;
+	private String name;
 	
 	private String lastName;
 	
@@ -75,12 +72,8 @@ public class UserAplication {
 	@Size(min = 6)
 	private String password;
 	
-	private String celular;
-	
-	@Size(max=1) // M = master, V = vendedor, C = capitador 
-	private String cargo;
-	
-	private String roles;
+	// @Size(max=1) // M = master, V = vendedor, C = capitador 
+	private TipoUsuario cargo;
 	
 	@JsonBackReference
 	@ManyToOne

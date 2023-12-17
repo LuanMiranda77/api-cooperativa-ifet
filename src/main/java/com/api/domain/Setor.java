@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -43,15 +44,11 @@ public class Setor {
 	private Long id;
 	
 	@Size( min=11, max = 14)
-	private String cnpjCpf;
+	private String cnpj;
 	
-	@NotNull
-	private String razao;
+	private String name;
 	
-	
-	private String nome;
-	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCreate;
 	
@@ -68,5 +65,9 @@ public class Setor {
 //	@JsonIgnore
 //	@OneToMany(mappedBy = "setor")
 //	private List<Product> product = new ArrayList<Product>();
-	
+
+	@PrePersist
+	private void setDeleted(){
+		this.deleted=0;
+	}
 }

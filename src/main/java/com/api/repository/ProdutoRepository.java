@@ -9,13 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.api.domain.Categoria;
 import com.api.domain.Product;
 import com.api.domain.UserAplication;
 import com.api.domain.enuns.OrderStatus;
-
-//@autor Jadson Feitosa #29
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Product, Long> {

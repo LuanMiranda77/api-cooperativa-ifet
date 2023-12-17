@@ -32,7 +32,7 @@ public interface UsuarioRepository extends JpaRepository<UserAplication, Long> {
 	@Query(value="update UserAplication set status =:status where setor_id =:id" , nativeQuery = true)
 	public void updateStatusBySetor(@Param("id") Long id, @Param("status") String status);
 	
-	@Query(value = "SELECT * FROM UserAplication  where setor_id=:setor", nativeQuery = true)
+	@Query(value = "SELECT * FROM user_aplication  where setor_id=:setor", nativeQuery = true)
 	public List<UserAplication> findBySetor(Long setor);
 	
 	@Query(value = "SELECT MAX(codigo) as codigo FROM UserAplication  where setor_id=:setor", nativeQuery = true)

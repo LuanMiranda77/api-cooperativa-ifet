@@ -4,7 +4,7 @@ package com.api.domain.enuns;
 
 public enum TipoUsuario {
 	
-	MASTER("M"), CAIXA("C"), ESTOQUISTA("E"), ADMIN("A"), REVENDA("R"), GERENTE("G");
+	MASTER("M"), VENDEDOR("V"), CAPITADOR("C");
 	
 	private String descricao;
 

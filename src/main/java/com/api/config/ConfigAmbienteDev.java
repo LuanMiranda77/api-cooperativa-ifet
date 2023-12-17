@@ -21,6 +21,8 @@ import com.api.domain.Setor;
 import com.api.domain.UserAplication;
 import com.api.domain.enuns.OrderStatus;
 import com.api.domain.enuns.StatusUsuario;
+import com.api.domain.enuns.TipoUsuario;
+import com.api.domain.enuns.TypePayment;
 import com.api.repository.ClienteRepository;
 import com.api.repository.PagamentoRepository;
 import com.api.repository.PedidoRepository;
@@ -32,7 +34,7 @@ import com.api.services.UsuarioService;
 import com.api.utils.UtilsHorasData;
 
 @Configuration
-@Profile("prod")
+@Profile("dev")
 public class ConfigAmbienteDev {
 
 	@Transient
@@ -43,7 +45,7 @@ public class ConfigAmbienteDev {
 	@Autowired
 	UsuarioRepository userRepository;
 	@Autowired
-	PagamentoRepository agamentoRepository;
+	PagamentoRepository paymentRepository;
 	@Autowired
 	PedidoRepository pedidoRepository;
 	@Autowired
@@ -74,38 +76,22 @@ public class ConfigAmbienteDev {
 		
 
 		Setor setor = new Setor();
-		setor.setRazao("Suinos LTDA");
-		setor.setNome("Suinos");
-		setor.setCnpjCpf("35367939000173");
+		setor.setName("Suinos");
+		setor.setCnpj("35367939000173");
 		setor = setorRepository.save(setor);
 		
 		setor = new Setor();
-		setor.setRazao("Laticinio LTDA");
-		setor.setNome("Laticinio");
-		setor.setCnpjCpf("35367939000173");
+		setor.setName("Laticinio");
+		setor.setCnpj("35367939000173");
 		setor = setorRepository.save(setor);
-
-		UserAplication user1 = new UserAplication();
-		user1.setEmail("agilityecommerce@gmail.com");
-		user1.setCpf("39926782027");
-		user1.setCelular("83996386694");
-		;
-		user1.setPassword("123456");
-		user1.setNome("ADMIN");
-		user1.setRoles("1-2-3");
-		user1.setStatus(StatusUsuario.S);
-//		new BCryptPasswordEncoder().encode("123456")
-		user1.setCargo("R");
-		user = userRepository.save(user1);
 
 		user = new UserAplication();
 		user.setEmail("luanprof30@gmail.com");
 		user.setPassword("123456");
-		user.setNome("LUAN MIRANDA");
-		user.setRoles("1-2-3-4");
+		user.setName("LUAN MIRANDA");
 //		new BCryptPasswordEncoder().encode("123456")
 		user.setStatus(StatusUsuario.S);
-		user.setCargo("M");
+		user.setCargo(TipoUsuario.MASTER);
 		user = userRepository.save(user);
 
 
@@ -114,15 +100,11 @@ public class ConfigAmbienteDev {
 
 			UserAplication user3 = new UserAplication();
 			user3.setEmail("test" + i + "@gmail.com");
-			user3.setCpf("39926782027");
-			user3.setCelular("83996386694");
-			;
 			user3.setPassword("123456");
-			user3.setNome("TESTE USER" + i);
-			user3.setRoles("1-2-3");
+			user3.setName("TESTE USER" + i);
 			user3.setStatus(StatusUsuario.S);
 //			new BCryptPasswordEncoder().encode("123456")
-			user3.setCargo(i == 1 ? "G" : i == 2 ? "C" : "E");
+			user3.setCargo(i == 1 ? TipoUsuario.CAPITADOR : TipoUsuario.VENDEDOR);
 			user3.setSetor(setor);
 
 			users.add(user3);
@@ -140,13 +122,14 @@ public class ConfigAmbienteDev {
 			produto.setPrice(new BigDecimal(23));
 
 			Payment pagamento = new Payment();
+			pagamento.setName(TypePayment.CARTAO_DEBITO.toString());
+			pagamento = paymentRepository.save(pagamento);
 
 			Date date = UtilsHorasData.subtrair(new Date(), 3);
 
-			if (i % 2 == 0) {
-				pagamento.setName("CARTAO CREDITO");
-
-			}
+//			if (i % 2 == 0) {
+//				pagamento.setName("CARTAO CREDITO");
+//			}
 
 			pedido = new OrderSale();
 //			pedido.setCliente(cliente);
@@ -181,11 +164,13 @@ public class ConfigAmbienteDev {
 
 			pedido.setPagamento(pagamento);
 			pedido.setProducts(itensPedido);
+			pedido.setUserAplication(user);
 
 			pedido.setValorTotal((produto.getPrice().multiply(new BigDecimal(
 					itens.getQuantitySale() + itens2.getQuantitySale() + itens3.getQuantitySale()))));
 
 			pedidos.add(pedido);
+			
 
 		}
 

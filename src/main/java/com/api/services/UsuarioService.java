@@ -31,16 +31,6 @@ public class UsuarioService {
 			throw new UsuarioExistException();
 		}
 		
-		if(!pEntity.getCargo().equals("M") || !pEntity.getCargo().equals("R")) {
-			Long codigo = usuarioRepository.findMaxCodigoBySetor(pEntity.getSetor().getId());
-			if(codigo==null) {
-				codigo=1l;
-			}else {
-				codigo+=1l;
-			}
-			pEntity.setCodigo(codigo);
-		}
-		
 		userSalvo = usuarioRepository.save(pEntity);
 		userSalvo.setPassword(null);
 		
@@ -65,7 +55,7 @@ public class UsuarioService {
 		UserAplication user = usuarioRepository.findByEmail(email);
 		if(user != null) {
 			try {
-				emailService.sendEmailSimples(user.getEmail(), "Recuperação de senha", "Caro(a) "+user.getNome()+",\n\r"
+				emailService.sendEmailSimples(user.getEmail(), "Recuperação de senha", "Caro(a) "+user.getName()+",\n\r"
 						+ "você solicitou a recuperação de sua senha de acesso do portal. \n\r"
 						+ "caso se esqueceu da senha ela é: "+user.getPassword());
 			} catch (MessagingException e) {
