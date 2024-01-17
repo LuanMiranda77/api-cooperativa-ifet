@@ -69,7 +69,7 @@ public class UsuarioResource implements ResourceBase<UserAplication, Long> {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<UserAplication> save(@Valid @RequestBody UserTO pEntity, HttpServletResponse response) {
-		Setor setor = estabelecimentoRepository.getById(pEntity.getEstabelecimento());
+		Setor setor = estabelecimentoRepository.getById(pEntity.getSetor());
 		UserAplication user = pEntity.converteParaEntidadeSemEstabelecimento(pEntity);
 		user.setSetor(setor);
 		UserAplication usuarioSalvo = usuarioService.save(user);
@@ -95,7 +95,7 @@ public class UsuarioResource implements ResourceBase<UserAplication, Long> {
 //	Atualizar Usuario
 	@PutMapping
 	public ResponseEntity<UserAplication> update(@Valid @RequestBody UserTO pEntity) {
-		Setor setor = estabelecimentoRepository.getById(pEntity.getEstabelecimento());
+		Setor setor = estabelecimentoRepository.getById(pEntity.getSetor());
 		UserAplication user = pEntity.converteParaEntidadeSemEstabelecimento(pEntity);
 		user.setSetor(setor);
 		UserAplication usuarioSalvo = usuarioService.update(user);

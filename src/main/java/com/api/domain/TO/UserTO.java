@@ -19,19 +19,20 @@ public class UserTO implements Serializable{
 	
 	private Long id;
 	private String cpf;
-	private Long codigo;
-	private String nome;
-	private Date dataCriacao ;
-	private Date dataAtualizacao;
+	private String name;
+	private String lastName;
+	private Date dateCreate;
+	private Date dateUpdate;
 	private Date acesso;
 	private StatusUsuario status;
-	private String celular;
+	// private String celular;
 	private String cargo;
 	private String email;
 	private String password;
 	private String roles;
-	private Long estabelecimento;
+	private Long setor;
 	private Date sincTemp;
+	private String userName;
 	
 	public UserTO() {
 		super();
@@ -41,11 +42,11 @@ public class UserTO implements Serializable{
 			StatusUsuario status, String roles) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.name = nome;
 		this.email = email;
 		this.password = password;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
+		this.dateCreate = dataCriacao;
+		this.dateUpdate = dataAtualizacao;
 		this.status = status;
 		this.roles = roles;
 		
