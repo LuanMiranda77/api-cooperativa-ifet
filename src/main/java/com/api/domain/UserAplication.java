@@ -73,9 +73,10 @@ public class UserAplication {
 	private String password;
 	
 	// @Size(max=1) // M = master, V = vendedor, C = capitador 
+	@Enumerated(EnumType.STRING)
 	private TipoUsuario cargo;
 	
-	@JsonBackReference
+	// @JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="setor_id")
 	private Setor setor;

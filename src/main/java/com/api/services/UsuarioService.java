@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.domain.UserAplication;
+import com.api.domain.enuns.TipoUsuario;
 import com.api.repository.UsuarioRepository;
 import com.api.services.exceptions.EmailNotExistException;
 import com.api.services.exceptions.UsuarioExistException;
@@ -26,7 +27,7 @@ public class UsuarioService {
 	
 	public UserAplication save(UserAplication pEntity) {
 		UserAplication userSalvo =null;
-		
+		System.err.println(pEntity.getId());
 		if(usuarioRepository.existsByEmail(pEntity.getEmail())) {
 			throw new UsuarioExistException();
 		}

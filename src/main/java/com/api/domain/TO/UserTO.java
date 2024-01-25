@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import com.api.domain.UserAplication;
 import com.api.domain.enuns.Roles;
 import com.api.domain.enuns.StatusUsuario;
+import com.api.domain.enuns.TipoUsuario;
 
 import lombok.Data;
 @Data
@@ -26,7 +27,7 @@ public class UserTO implements Serializable{
 	private Date acesso;
 	private StatusUsuario status;
 	// private String celular;
-	private String cargo;
+	private TipoUsuario cargo;
 	private String email;
 	private String password;
 	private String roles;

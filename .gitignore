@@ -24,3 +24,6 @@ hs_err_pid*
 replay_pid*
 .vscode/settings.json
 target/classes/META-INF/maven/com.example/api-cooperativa-ifet/pom.properties
+.settings/org.eclipse.jdt.core.prefs
+target/classes/META-INF/MANIFEST.MF
+target/classes/META-INF/maven/com.example/api-cooperativa-ifet/pom.properties

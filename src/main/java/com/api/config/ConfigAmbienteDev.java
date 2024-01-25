@@ -38,7 +38,7 @@ import com.api.utils.UtilsHorasData;
 public class ConfigAmbienteDev {
 
 	@Transient
-	private int quantDeLoop = 100;
+	private int quantDeLoop = 10;
 
 	@Autowired
 	ProdutoRepository produtoRepository;
@@ -103,8 +103,11 @@ public class ConfigAmbienteDev {
 			user3.setPassword("123456");
 			user3.setName("TESTE USER" + i);
 			user3.setStatus(StatusUsuario.S);
+			user3.setUserName("teste"+i);
+			user3.setLastName("testsobrenome"+i);
 //			new BCryptPasswordEncoder().encode("123456")
 			user3.setCargo(i == 1 ? TipoUsuario.CAPITADOR : TipoUsuario.VENDEDOR);
+			setor.setId(1l);
 			user3.setSetor(setor);
 
 			users.add(user3);
